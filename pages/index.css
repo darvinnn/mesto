@@ -1,0 +1,41 @@
+@import url(../vendor/normalize.css);
+
+.page {
+  background-color: #000;
+}
+
+.header {}
+
+.header__logo {}
+
+.profile {}
+
+.profile__avatar {}
+
+.profile__info {}
+
+.profile__title {}
+
+.profile__name {}
+
+.profile__edit {}
+
+.profile__subtitle {}
+
+.profile__add-button {}
+
+.elements {}
+
+.card {}
+
+.card__image {}
+
+.card__info {}
+
+.card__name {}
+
+.card__like {}
+
+.footer {}
+
+.footer__caption {}
