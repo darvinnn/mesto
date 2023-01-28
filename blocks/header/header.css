@@ -1,0 +1,15 @@
+.header {
+  padding: 45px 0 37px 0;
+  width: calc(880/1280*100vw);
+  max-width: 880px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(84, 84, 84, .7);
+  box-sizing: border-box;
+}
+
+@media (max-width: 720px) {
+  .header {
+    width: 100vw;
+    padding: 28px 0 28px 0;
+  }
+}

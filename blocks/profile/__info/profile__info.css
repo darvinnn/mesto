@@ -1,0 +1,17 @@
+.profile__info {
+  padding-left: 30px;
+  padding-right: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #fff;
+  transform: translateY(22px);
+}
+
+@media (max-width: 720px) {
+  .profile__info {
+    padding: 0;
+    gap: 14px;
+    transform: translateY(-3px);
+  }
+}
