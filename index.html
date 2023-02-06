@@ -15,14 +15,26 @@
       <img class="header__logo" src="./images/header__logo.svg" alt="Логотип">
     </header>
     <main>
+      <section class="popup popup_opened">
+        <form class="popup__container">
+          <p class="popup__title">Редактировать профиль</p>
+          <label for="name" class="sr-only">Ваше имя </label>
+          <input class="popup__input" id="name" type="text" placeholder="Жак-Ив Кусто">
+          <label for="profession" class="sr-only">Ваш род деятельности</label>
+          <input class="popup__input" id="profession" type="text" placeholder="Исследователь океана">
+          <input class="popup__submit-button" type="submit" value="Сохранить">
+          <div class="popup__close-button"></div>
+        </form>
+
+      </section>
       <section class="profile">
         <img class="profile__avatar" src="./images/profile__avatar.jpg" alt="Аватар">
         <div class="profile__info">
           <div class="profile__title">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <h1 class="profile__name text-overflow">Жак-Ив Кусто</h1>
             <div class="profile__edit-button"></div>
           </div>
-          <p class="profile__subtitle">Исследователь океана</p>
+          <p class="profile__subtitle text-overflow">Исследователь океана</p>
         </div>
         <div class="profile__add-button"></div>
       </section>
@@ -77,6 +89,8 @@
       <p class="footer__caption">© 2023 Максим Николаев</p>
     </footer>
   </div>
+
+  <script src="./scripts/index.js"></script>
 </body>
 
 </html>
