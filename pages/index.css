@@ -60,6 +60,7 @@
   width: 100%;
   padding: 0 0 10px 0;
   margin-top: 30px;
+  outline: none;
 }
 
 .popup__input:first-of-type {
