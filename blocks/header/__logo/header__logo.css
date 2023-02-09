@@ -1,4 +1,6 @@
-.header__logo {}
+.header__logo {
+  width: 142px;
+}
 
 @media (max-width: 720px) {
   .header__logo {

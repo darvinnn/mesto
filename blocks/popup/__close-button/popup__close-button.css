@@ -6,6 +6,7 @@
   position: absolute;
   top: -40px;
   right: -40px;
+  background-color: transparent;
   transition: .2s;
 }
 

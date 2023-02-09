@@ -2,6 +2,7 @@
 @import url(../fonts/fonts.css);
 @import url(../blocks/text-overflow/text-overflow.css);
 @import url(../blocks/sr-only/sr-only.css);
+@import url(../blocks/main/main.css);
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__close-button/popup__close-button.css);
@@ -21,6 +22,7 @@
 @import url(../blocks/profile/__avatar/profile__avatar.css);
 @import url(../blocks/profile/__add-button/profile__add-button.css);
 @import url(../blocks/elements/elements.css);
+@import url(../blocks/elements/__list/elements__list.css);
 @import url(../blocks/card/card.css);
 @import url(../blocks/card/__image/card__image.css);
 @import url(../blocks/card/__info/card__info.css);

@@ -1,4 +1,7 @@
 .page {
   background-color: #000;
   font-family: 'Inter', Arial, Helvetica, sans-serif;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }

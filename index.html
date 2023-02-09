@@ -14,72 +14,72 @@
     <header class="header">
       <img class="header__logo" src="./images/header__logo.svg" alt="Логотип">
     </header>
-    <main>
-      <section class="popup popup_opened">
-        <form class="popup__container">
-          <p class="popup__title">Редактировать профиль</p>
-          <label for="name" class="sr-only">Ваше имя</label>
-          <input class="popup__input" id="name" type="text" value="Жак-Ив Кусто">
-          <label for="profession" class="sr-only">Ваш род деятельности</label>
-          <input class="popup__input" id="profession" type="text" value="Исследователь океана">
-          <input class="popup__submit-button" type="submit" value="Сохранить">
-          <div class="popup__close-button"></div>
-        </form>
-
-      </section>
+    <main class="main">
+      <div class="popup">
+        <div class="popup__container">
+          <h3 class="popup__title">Редактировать профиль</h3>
+          <button class="popup__close-button" type="button"></button>
+          <form name="profile-edit">
+            <input class="popup__input popup__input_type_name" name="name-input" type="text" value="Жак-Ив Кусто">
+            <input class="popup__input popup__input_type_profession" name="profession-input" type="text"
+              value="Исследователь океана">
+            <input class="popup__submit-button" type="submit" value="Сохранить">
+          </form>
+        </div>
+      </div>
       <section class="profile">
         <img class="profile__avatar" src="./images/profile__avatar.jpg" alt="Аватар">
         <div class="profile__info">
           <div class="profile__title">
             <h1 class="profile__name text-overflow">Жак-Ив Кусто</h1>
-            <div class="profile__edit-button"></div>
+            <button class="profile__edit-button" type="button"></button>
           </div>
           <p class="profile__subtitle text-overflow">Исследователь океана</p>
         </div>
-        <div class="profile__add-button"></div>
+        <button class="profile__add-button" type="button"></button>
       </section>
-      <section>
-        <ul class="elements">
+      <section class="elements">
+        <ul class="elements__list">
           <li class="card">
             <img class="card__image" src="./images/card__Karachaevsk.jpg" alt="Карачаевск">
             <div class="card__info">
-              <h2 class="card__name">Карачаевск</h2>
-              <div class="card__like-button"></div>
+              <h2 class="card__name text-overflow">Карачаевск</h2>
+              <button class="card__like-button" type="button"></button>
             </div>
           </li>
           <li class="card">
             <img class="card__image" src="./images/card__Elbrus.jpg" alt="Эльбрус">
             <div class="card__info">
-              <h2 class="card__name">Гора Эльбрус</h2>
-              <div class="card__like-button"></div>
+              <h2 class="card__name text-overflow">Гора Эльбрус</h2>
+              <button class="card__like-button" type="button"></button>
             </div>
           </li>
           <li class="card">
             <img class="card__image" src="./images/card__Dombai.jpg" alt="Домбай">
             <div class="card__info">
-              <h2 class="card__name">Домбай</h2>
-              <div class="card__like-button"></div>
+              <h2 class="card__name text-overflow">Домбай</h2>
+              <button class="card__like-button" type="button"></button>
             </div>
           </li>
           <li class="card">
             <img class="card__image" src="./images/card__Altai.jpg" alt="Алтай">
             <div class="card__info">
-              <h2 class="card__name">Алтай</h2>
-              <div class="card__like-button"></div>
+              <h2 class="card__name text-overflow">Алтай</h2>
+              <button class="card__like-button" type="button"></button>
             </div>
           </li>
           <li class="card">
             <img class="card__image" src="./images/card__Krasnaya-Polyana.jpg" alt="Красная поляна">
             <div class="card__info">
-              <h2 class="card__name">Красная поляна</h2>
-              <div class="card__like-button"></div>
+              <h2 class="card__name text-overflow">Красная поляна</h2>
+              <button class="card__like-button" type="button"></button>
             </div>
           </li>
           <li class="card">
             <img class="card__image" src="./images/card__Sheregesh.jpg" alt="Шерегеш">
             <div class="card__info">
-              <h2 class="card__name">Шерегеш</h2>
-              <div class="card__like-button"></div>
+              <h2 class="card__name text-overflow">Шерегеш</h2>
+              <button class="card__like-button" type="button"></button>
             </div>
           </li>
         </ul>

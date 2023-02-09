@@ -8,6 +8,7 @@
   background-position: center;
   transition: .2s;
   box-sizing: border-box;
+  background-color: transparent;
 }
 
 .profile__add-button:hover {
@@ -24,8 +25,7 @@
 
 @media (max-width: 420px) {
   .profile__add-button {
-    width: 100%;
-    background-image: url(../../../images/profile__add-button-small.svg);
-    margin-top: -5px;
+    background-size: 16px;
+    transform: translateY(-5px);
   }
 }

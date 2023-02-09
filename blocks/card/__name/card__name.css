@@ -1,8 +1,8 @@
 .card__name {
   margin: 0;
-  padding: 25px 0 31px 21px;
-  height: 23px;
+  padding: 25px 0 25px 21px;
   font-size: 24px;
   line-height: 29px;
   font-weight: 900;
+  max-width: 70%;
 }

@@ -5,6 +5,8 @@
   background-repeat: no-repeat;
   margin: 30px 20px 30px 0;
   transition: .2s;
+  border: none;
+  background-color: transparent;
 }
 
 .card__like-button:hover {
