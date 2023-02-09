@@ -8,5 +8,6 @@
   .profile__title {
     gap: 10px;
     justify-content: center;
+    padding-left: 28px;
   }
 }

@@ -8,6 +8,7 @@
   right: -40px;
   background-color: transparent;
   transition: .2s;
+  border: none;
 }
 
 .popup__close-button:hover {

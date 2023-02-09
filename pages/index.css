@@ -1,7 +1,6 @@
 @import url(../vendor/normalize.css);
 @import url(../fonts/fonts.css);
 @import url(../blocks/text-overflow/text-overflow.css);
-@import url(../blocks/sr-only/sr-only.css);
 @import url(../blocks/main/main.css);
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);

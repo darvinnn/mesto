@@ -3,13 +3,17 @@
   padding-right: 18px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 7px;
   color: #fff;
+  transform: translateY(23px);
 }
 
 @media (max-width: 720px) {
   .profile__info {
     padding: 0;
     gap: 14px;
+    align-items: center;
+    transform: translateY(-3px);
+    gap: 6px;
   }
 }
