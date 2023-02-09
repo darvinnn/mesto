@@ -20,11 +20,12 @@
     width: 100%;
     max-width: 306px;
   }
+}
 
-  @media (max-width: 420px) {
-    .profile__add-button {
-      width: 100%;
-      background-image: url(../../../images/profile__add-button-small.svg);
-      margin-top: -5px;
-    }
+@media (max-width: 420px) {
+  .profile__add-button {
+    width: 100%;
+    background-image: url(../../../images/profile__add-button-small.svg);
+    margin-top: -5px;
   }
+}
