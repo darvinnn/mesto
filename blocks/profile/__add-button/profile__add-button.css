@@ -1,5 +1,5 @@
 .profile__add-button {
-  height: 46px;
+  height: 50px;
   align-self: center;
   border: 2px solid #fff;
   border-radius: 2px;
@@ -7,6 +7,7 @@
   background-repeat: no-repeat;
   background-position: center;
   transition: .2s;
+  box-sizing: border-box;
 }
 
 .profile__add-button:hover {
@@ -16,12 +17,14 @@
 
 @media (max-width: 720px) {
   .profile__add-button {
-    width: calc(880/1280*100vw);
-    max-width: 310px;
+    width: 100%;
+    max-width: 306px;
   }
 
   @media (max-width: 420px) {
     .profile__add-button {
-      width: calc(278/320*100vw);
+      width: 100%;
       background-image: url(../../../images/profile__add-button-small.svg);
+      margin-top: -5px;
     }
+  }

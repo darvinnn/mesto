@@ -1,7 +1,8 @@
 .profile__title {
   display: flex;
   align-items: flex-end;
-  gap: 18px;
+  gap: 19px;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 720px) {

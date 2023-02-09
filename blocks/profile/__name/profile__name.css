@@ -3,12 +3,20 @@
   line-height: 48px;
   font-weight: 500;
   margin: 0;
+  max-width: 450px;
+  transform: translateY(9px);
 }
 
 @media (max-width: 910px) {
   .profile__name {
     font-size: 27px;
     line-height: 33px;
-    height: 26px;
+  }
+}
+
+@media (max-width: 720px) {
+  .profile__name {
+    max-width: 60vw;
+    transform: translateY(7px);
   }
 }

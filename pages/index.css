@@ -1,5 +1,14 @@
 @import url(../vendor/normalize.css);
 @import url(../fonts/fonts.css);
+@import url(../blocks/text-overflow/text-overflow.css);
+@import url(../blocks/sr-only/sr-only.css);
+@import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_opened/popup_opened.css);
+@import url(../blocks/popup/__close-button/popup__close-button.css);
+@import url(../blocks/popup/__container/popup__container.css);
+@import url(../blocks/popup/__input/popup__input.css);
+@import url(../blocks/popup/__submit-button/popup__submit-button.css);
+@import url(../blocks/popup/__title/popup__title.css);
 @import url(../blocks/page/page.css);
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);
@@ -19,96 +28,3 @@
 @import url(../blocks/card/__like-button/card__like-button.css);
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__caption/footer__caption.css);
-
-.popup {
-  background-color: rgba(0, 0, 0, .5);
-  width: 100vw;
-  height: 100vh;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
-.popup_opened {
-  display: flex;
-}
-
-.popup__container {
-  width: 430px;
-  background-color: #fff;
-  box-sizing: border-box;
-  padding: 34px 36px 37px 36px;
-  border-radius: 10px;
-  position: relative;
-}
-
-.popup__title {
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 29px;
-  margin: 0;
-  padding-bottom: 54px;
-}
-
-.popup__input {
-  border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
-  width: 100%;
-  padding: 0 0 10px 0;
-  margin-top: 30px;
-  outline: none;
-}
-
-.popup__input:first-of-type {
-  margin-top: 0;
-}
-
-.popup__submit-button {
-  margin-top: 48px;
-  width: 100%;
-  height: 50px;
-  border: none;
-  background-color: #000;
-  color: #fff;
-  border-radius: 2px;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 22px;
-  transition: .2s;
-}
-
-.popup__submit-button:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, .8);
-}
-
-.popup__close-button {
-  background-image: url(../images/popup__close-button.svg);
-  /* !!! ПОМЕНЯТЬ ПОТОММ ПУТЬ */
-  background-size: contain;
-  width: 32px;
-  height: 32px;
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  transition: .2s;
-}
-
-.popup__close-button:hover {
-  cursor: pointer;
-  opacity: .6;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  border: 0;
-}
