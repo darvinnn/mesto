@@ -28,11 +28,18 @@
           </form>
         </div>
       </div>
+      <div class="image-popup popup">
+        <div class="image-popup__container">
+          <button class="image-popup__close-button" type="button"></button>
+          <img class="image-popup__image" alt="Изображение места" src="./images/card__Sheregesh.jpg">
+          <p class="image-popup__title">Testin</p>
+        </div>
+      </div>
       <div class="new-card-popup popup">
         <div class="new-card-popup__container">
           <h3 class="new-card-popup__title">Новое место</h3>
           <button class="new-card-popup__close-button" type="button"></button>
-          <form name="new-card">
+          <form id="new-card-form" name="new-card">
             <input class="new-card-popup__input new-card-popup__input_type_name" name="new-card-name" type="text"
               placeholder="Название">
             <input class="new-card-popup__input new-card-popup__input_type_image" name="new-card-image" type="text"
@@ -64,7 +71,8 @@
 
   <template id="card-template">
     <li class="card">
-      <img class="card__image">
+      <button class="card__delete-button" type="button"></button>
+      <img class="card__image" alt="Изображение места">
       <div class="card__info">
         <h2 class="card__name text-overflow"></h2>
         <button class="card__like-button" type="button"></button>
