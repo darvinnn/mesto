@@ -9,6 +9,7 @@
   background-color: transparent;
   transition: .2s;
   border: none;
+  background-repeat: no-repeat;
 }
 
 .new-card-popup__close-button:hover {
