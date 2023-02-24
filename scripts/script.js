@@ -12,50 +12,29 @@ const newCardAddButton = document.querySelector('.profile__add-button');
 const newCardPopupCloseButton = document.querySelector('.new-card-popup__close-button');
 const newCardForm = document.querySelector('#new-card-form');
 const imagePopup = document.querySelector('.image-popup');
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+const imagePopupPicture = imagePopup.querySelector('.image-popup__image');
+const cardTemplate = document.querySelector('#card-template').content;
+const cardName = newCardForm.querySelector('.new-card-popup__input_type_name');
+const cardImage = newCardForm.querySelector('.new-card-popup__input_type_image');
 
 
 function addCard(imageLink, cardName) {
-  const cardTemplate = document.querySelector('#card-template').content;
   const card = cardTemplate.querySelector('.card').cloneNode(true);
   const deleteButton = card.querySelector('.card__delete-button');
-  card.querySelector('.card__image').src = imageLink;
+  card.setAttribute('name', cardName);
+  const cardImage = card.querySelector('.card__image');
+  cardImage.src = imageLink;
   card.querySelector('.card__name').textContent = cardName;
   card.querySelector('.card__like-button').addEventListener('click', evt => { evt.target.classList.toggle('card__like-button_active') });
   card.querySelector('.card__delete-button');
-  card.querySelector('.card__image').addEventListener('click', () => {
-    imagePopup.querySelector('.image-popup__image').src = imageLink;
+  cardImage.addEventListener('click', () => {
+    imagePopupPicture.src = imageLink;
+    imagePopupPicture.setAttribute('alt', cardName);
     imagePopup.querySelector('.image-popup__title').textContent = cardName;
-    imagePopup.classList.add('popup_opened');
-    imagePopup.querySelector('.image-popup__close-button').addEventListener('click', () => { imagePopup.classList.remove('popup_opened'); })
+    openPopup(imagePopup);
   })
   deleteButton.addEventListener('click', () => {
-    deleteButton.closest('.card').remove()
+    card.remove()
   })
   elementsList.prepend(card);
 }
@@ -66,20 +45,18 @@ function addInitialCards(arr) {
   }
 }
 
-function editPopupClose() {
-  editPopup.classList.remove('popup_opened');
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
 }
 
-function newCardPopupClose() {
-  newCardPopup.classList.remove('popup_opened')
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
 }
 
 function newCardAdd(evt) {
   evt.preventDefault();
-  const cardName = newCardForm.querySelector('.new-card-popup__input_type_name');
-  const cardImage = newCardForm.querySelector('.new-card-popup__input_type_image');
   addCard(cardImage.value, cardName.value);
-  newCardPopupClose();
+  closePopup(newCardPopup);
   cardImage.value = '';
   cardName.value = '';
 }
@@ -88,7 +65,7 @@ function handleFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profession.textContent = professionInput.value;
-  editPopupClose();
+  closePopup(editPopup);
 }
 
 formElement.addEventListener('submit', handleFormSubmit);
@@ -96,11 +73,11 @@ newCardForm.addEventListener('submit', newCardAdd);
 editButton.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   professionInput.value = profession.textContent;
-  editPopup.classList.add('popup_opened');
+  openPopup(editPopup);
 });
-newCardAddButton.addEventListener('click', () => { newCardPopup.classList.add('popup_opened') });
-editPopupCloseButton.addEventListener('click', editPopupClose);
-newCardPopupCloseButton.addEventListener('click', newCardPopupClose);
+newCardAddButton.addEventListener('click', () => openPopup(newCardPopup));
+editPopupCloseButton.addEventListener('click', () => closePopup(editPopup));
+newCardPopupCloseButton.addEventListener('click', () => closePopup(newCardPopup));
+imagePopup.querySelector('.image-popup__close-button').addEventListener('click', () => closePopup(imagePopup));
 
 addInitialCards(initialCards);
-console.log(editPopup)
