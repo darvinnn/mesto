@@ -1,0 +1,5 @@
+@media (min-width: 846px) {
+  .elements__list_few-cards {
+    grid-template-columns: repeat(auto-fit, 282px);
+  }
+}

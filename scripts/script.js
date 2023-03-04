@@ -17,7 +17,6 @@ const cardTemplate = document.querySelector('#card-template').content;
 const cardName = newCardForm.querySelector('.new-card-popup__input_type_name');
 const cardImage = newCardForm.querySelector('.new-card-popup__input_type_image');
 
-
 function addCard(imageLink, cardName) {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
   const deleteButton = card.querySelector('.card__delete-button');
@@ -34,7 +33,8 @@ function addCard(imageLink, cardName) {
     openPopup(imagePopup);
   })
   deleteButton.addEventListener('click', () => {
-    card.remove()
+    card.remove();
+    checkCardsQuantity()
   })
   elementsList.prepend(card);
 }
@@ -66,6 +66,13 @@ function handleFormSubmit(evt) {
   profileName.textContent = nameInput.value;
   profession.textContent = professionInput.value;
   closePopup(editPopup);
+}
+
+//Добавил функцию, чтобы карточки были ризиновыми при адаптиве, но не растягивались на весь экран пк, если карточек меньше трех
+function checkCardsQuantity() {
+  if (document.querySelectorAll('.card').length < 3) {
+    document.querySelector('.elements__list').classList.add('elements__list_few-cards');
+  }
 }
 
 formElement.addEventListener('submit', handleFormSubmit);
