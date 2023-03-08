@@ -59,5 +59,13 @@ const hideError = (formElement, inputElement) => {
   inputError.classList.remove('input__error-text');
 }
 
+// Очистка ошибок
+const resetForm = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input'))
+  inputList.forEach((inputElement) => {
+    hideError(formElement, inputElement)
+  })
+}
+
 
 enableValidation()

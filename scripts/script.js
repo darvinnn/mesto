@@ -47,6 +47,7 @@ function addInitialCards(arr) {
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  resetForm(popup.getElementsByTagName('form')[0]) // Ресет валидации при открытии попапа
   document.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
       closePopup(popup)
