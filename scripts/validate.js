@@ -46,14 +46,14 @@ const checkInputValidity = (formElement, inputElement) => {
 };
 
 const showError = (formElement, inputElement, errorMessage) => {
-  const inputError = formElement.querySelector(`.error__${inputElement.name}`)
+  const inputError = formElement.querySelector(`#error__${inputElement.name}`)
   inputElement.classList.add('input__error');
   inputError.textContent = errorMessage;
   inputError.classList.add('input__error-text');
 };
 
 const hideError = (formElement, inputElement) => {
-  const inputError = formElement.querySelector(`.error__${inputElement.name}`)
+  const inputError = formElement.querySelector(`#error__${inputElement.name}`)
   inputElement.classList.remove('input__error');
   inputError.textContent = '';
   inputError.classList.remove('input__error-text');
