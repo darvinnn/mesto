@@ -50,11 +50,6 @@ function addInitialCards(arr) {
   }
 }
 
-function checkFormsQuantity(element) {
-  const forms = Array.from(element.querySelectorAll('.form'))
-  return forms.length
-}
-
 function escKeyHandler(evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_opened')
@@ -64,9 +59,6 @@ function escKeyHandler(evt) {
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  if (checkFormsQuantity(popup) > 0) {
-    resetForm(validationConfig) // Ресет валидации при открытии попапа
-  }
   document.addEventListener('keydown', escKeyHandler)
 }
 
@@ -98,11 +90,13 @@ function checkCardsQuantity() {
 editFormElement.addEventListener('submit', handleFormSubmit);
 newCardForm.addEventListener('submit', newCardAdd);
 editButton.addEventListener('click', () => {
+  resetForm(editPopup, validationConfig);
   nameInput.value = profileName.textContent;
   professionInput.value = profession.textContent;
   openPopup(editPopup);
 });
 newCardAddButton.addEventListener('click', () => {
+  resetForm(newCardPopup, validationConfig);
   openPopup(newCardPopup);
 });
 

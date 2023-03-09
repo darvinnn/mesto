@@ -1,4 +1,5 @@
 const validationConfig = {
+  formSelector: '.form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__submit-button',
   inactiveButtonClass: 'popup__submit-button_disabled',
@@ -68,8 +69,8 @@ const hideError = (formElement, inputElement, config) => {
 }
 
 // Очистка ошибок
-const resetForm = (config) => {
-  const formList = Array.from(document.forms);
+const resetForm = (popup, config) => {
+  const formList = Array.from(popup.querySelectorAll(config.formSelector));
   formList.forEach((formElement) => {
     formElement.reset()
     const submitButton = formElement.querySelector(config.submitButtonSelector)
