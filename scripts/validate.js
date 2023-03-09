@@ -68,8 +68,9 @@ const hideError = (formElement, inputElement, config) => {
 }
 
 // Очистка ошибок
-const resetForm = (forms, config) => {
-  forms.forEach((formElement) => {
+const resetForm = (config) => {
+  const formList = Array.from(document.forms);
+  formList.forEach((formElement) => {
     formElement.reset()
     const submitButton = formElement.querySelector(config.submitButtonSelector)
     submitButton.classList.add(config.inactiveButtonClass)

@@ -65,7 +65,7 @@ function escKeyHandler(evt) {
 function openPopup(popup) {
   popup.classList.add('popup_opened');
   if (checkFormsQuantity(popup) > 0) {
-    resetForm(Array.from(popup.querySelectorAll('.form')), validationConfig) // Ресет валидации при открытии попапа
+    resetForm(validationConfig) // Ресет валидации при открытии попапа
   }
   document.addEventListener('keydown', escKeyHandler)
 }
