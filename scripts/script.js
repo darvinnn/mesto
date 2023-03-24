@@ -1,3 +1,16 @@
+import initialCards from "./initialCards.js";
+import Card from "./Card.js";
+import { FormValidation, resetForm } from "./validate.js";
+
+const validationConfig = {
+  formSelector: '.form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_disabled',
+  inputError: 'input__error',
+  inputErrorText: 'input__error-text'
+}
+
 const editButton = document.querySelector('.profile__edit-button');
 const editPopup = document.querySelector('.edit-popup');
 const editFormElement = document.querySelector('.edit-popup__form');
@@ -9,48 +22,24 @@ const elementsList = document.querySelector('.elements__list');
 const newCardPopup = document.querySelector('.new-card-popup');
 const newCardAddButton = document.querySelector('.profile__add-button');
 const newCardForm = document.querySelector('#new-card-form');
+const editForm = document.querySelector('#edit-popup-form');
 const imagePopup = document.querySelector('.image-popup');
-const imagePopupPicture = imagePopup.querySelector('.image-popup__image');
-const imagePopupTitle = imagePopup.querySelector('.image-popup__title')
-const cardTemplate = document.querySelector('#card-template').content;
 const cardName = newCardForm.querySelector('.new-card-popup__input_type_name');
 const cardImage = newCardForm.querySelector('.new-card-popup__input_type_image');
-const overlays = Array.from(document.querySelectorAll('.popup__overlay'));
+const cardTemplate = document.querySelector('#card-template').content;
 
-function createCard(imageLink, cardName) {
-  const card = cardTemplate.querySelector('.card').cloneNode(true);
-  const deleteButton = card.querySelector('.card__delete-button');
-  card.setAttribute('name', cardName);
-  const cardImage = card.querySelector('.card__image');
-  cardImage.src = imageLink;
-  cardImage.alt = cardName;
-  card.querySelector('.card__name').textContent = cardName;
-  card.querySelector('.card__like-button').addEventListener('click', evt => { evt.target.classList.toggle('card__like-button_active') });
-  card.querySelector('.card__delete-button');
-  cardImage.addEventListener('click', () => {
-    imagePopupPicture.src = imageLink;
-    imagePopupPicture.setAttribute('alt', cardName);
-    imagePopupTitle.textContent = cardName;
-    openPopup(imagePopup);
-  })
-  deleteButton.addEventListener('click', () => {
-    card.remove();
-    checkCardsQuantity()
-  })
-  return card
-}
+new FormValidation(validationConfig, newCardForm).enableValidation()
+new FormValidation(validationConfig, editForm).enableValidation()
 
-function addCard(imageLink, cardName) {
-  elementsList.prepend(createCard(imageLink, cardName));
-}
 
 function addInitialCards(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    addCard(arr[i].link, arr[i].name);
-  }
+  arr.forEach((item) => {
+    const card = new Card(item.link, item.name, elementsList, cardTemplate, imagePopup)
+    card.render();
+  })
 }
 
-function escKeyHandler(evt) {
+export function escKeyHandler(evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_opened')
     closePopup(openedPopup)
@@ -69,7 +58,9 @@ function closePopup(popup) {
 
 function newCardAdd(evt) {
   evt.preventDefault();
-  addCard(cardImage.value, cardName.value);
+  const card = new Card(cardImage.value, cardName.value, elementsList, cardTemplate, imagePopup)
+  card.render();
+  checkCardsQuantity()
   closePopup(newCardPopup);
 }
 
@@ -81,9 +72,12 @@ function handleFormSubmit(evt) {
 }
 
 //Добавил функцию, чтобы карточки были резиновыми при адаптиве, но не растягивались на весь экран пк, если карточек меньше трех
-function checkCardsQuantity() {
+export function checkCardsQuantity() {
   if (document.querySelectorAll('.card').length < 3) {
-    document.querySelector('.elements__list').classList.add('elements__list_few-cards');
+    elementsList.classList.add('elements__list_few-cards');
+  }
+  else {
+    elementsList.classList.remove('elements__list_few-cards');
   }
 }
 
