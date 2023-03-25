@@ -1,29 +1,31 @@
-import { checkCardsQuantity } from "./script.js";
-import { escKeyHandler } from "./script.js";
-
 class Card {
-  constructor(cardLink, cardName, container, cardTemplate, imagePopup) {
+  constructor(cardLink, cardName, cardTemplate, handleCardClick, checkCardsQuantity) {
     this._cardName = cardName;
     this._cardLink = cardLink;
-    this._container = container;
     this._cardTemplate = cardTemplate;
-    this._imagePopup = imagePopup;
+    this._handleCardClick = handleCardClick;
+    this._checkCardsQuantity = checkCardsQuantity;
   }
 
-  _openImagePopup = () => {
-    this._imagePopupPicture = this._imagePopup.querySelector('.image-popup__image');
-    this._imagePopupPicture.src = this._cardLink;
-    this._imagePopupPicture.setAttribute('alt', this._cardName);
-    this._imagePopup.querySelector('.image-popup__title').textContent = this._cardName;
-    this._imagePopup.classList.add('popup_opened');
-    document.addEventListener('keydown', escKeyHandler)
+  _setEventListeners = () => {
+    // Попап картинки
+    this._cardImage.addEventListener('click', () => this._handleCardClick(this._cardName, this._cardLink));
+
+    // Кнопка лайка
+    this._cardLikeButton = this._card.querySelector('.card__like-button');
+    this._cardLikeButton.addEventListener('click', this._handleLikeButton)
+
+    // Кнопка удаления
+    this._cardDeleteButton = this._card.querySelector('.card__delete-button');
+    this._cardDeleteButton.addEventListener('click', this._handleDeleteButton)
   }
+
 
   _handleLikeButton = (evt) => { evt.target.classList.toggle('card__like-button_active') }
 
   _handleDeleteButton = () => {
     this._card.remove();
-    checkCardsQuantity();
+    this._checkCardsQuantity();
   }
 
   // Получаем разметку карточки
@@ -39,21 +41,12 @@ class Card {
     this._cardImage.alt = this._cardName;
     this._card.querySelector('.card__name').textContent = this._cardName;
 
-    // Кнопка лайка
-    this._cardLikeButton = this._card.querySelector('.card__like-button');
-    this._cardLikeButton.addEventListener('click', this._handleLikeButton)
-
-    // Кнопка удаления
-    this._cardDeleteButton = this._card.querySelector('.card__delete-button');
-    this._cardDeleteButton.addEventListener('click', this._handleDeleteButton)
-
-    // Попап картинки
-    this._cardImage.addEventListener('click', this._openImagePopup)
+    this._setEventListeners()
   }
 
   render = () => {
     this._createCard();
-    this._container.prepend(this._card);
+    return this._card;
   }
 }
 

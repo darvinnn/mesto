@@ -1,4 +1,4 @@
-class FormValidation {
+class FormValidator {
   constructor(config, currentForm) {
     this._formSelector = config.formSelector;
     this._inputSelector = config.inputSelector;
@@ -63,24 +63,15 @@ class FormValidation {
     inputError.textContent = '';
     inputError.classList.remove(this._inputErrorText)
   }
-}
 
-// Очистка ошибок
-const resetForm = (popup, config) => {
-  const formList = Array.from(popup.querySelectorAll(config.formSelector));
-  formList.forEach((formElement) => {
-    formElement.reset()
-    const submitButton = formElement.querySelector(config.submitButtonSelector)
-    submitButton.classList.add(config.inactiveButtonClass)
-    submitButton.setAttribute('disabled', true);
-    const inputList = Array.from(formElement.querySelectorAll(config.inputSelector))
-    inputList.forEach((inputElement) => {
-      const inputError = popup.querySelector(`#error__${inputElement.name}`);
-      inputElement.classList.remove(config.inputError);
-      inputError.textContent = '';
-      inputError.classList.remove(config.inputErrorText)
+  resetValidation = () => {
+    this._toggleButtonState()
+    this._inputList.forEach((inputElement) => {
+      inputElement.value = ''
+      this._hideError(inputElement)
     })
-  })
+  }
 }
 
-export { FormValidation, resetForm }
+
+export default FormValidator
