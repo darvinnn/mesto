@@ -1,6 +1,7 @@
 import initialCards from "./initialCards.js";
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
+import Section from "./Section.js";
 
 const validationConfig = {
   formSelector: '.form',
@@ -38,17 +39,32 @@ const enableValidation = (config) => {
   })
 }
 
-function createCard(item) {
-  const card = new Card(item.link, item.name, cardTemplate, handleCardClick, checkCardsQuantity)
-  return card.render()
-}
+const initialCardsRendered = new Section({
+  items: initialCards,
+  renderer: (item) => {
+    const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity)
+    initialCardsRendered.addItem(card.render())
+  }
+}, elementsList)
 
-function addInitialCards(arr) {
-  arr.forEach((item) => {
-    const card = createCard(item)
-    elementsList.append(card)
-  })
+function addNewCard(evt) {
+  evt.preventDefault();
+  const cardInfo = [{
+    link: cardImage.value,
+    name: cardName.value
+  }]
+
+  const newCard = new Section({
+    items: cardInfo,
+    renderer: (item) => {
+      const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity)
+      newCard.addItem(card.render())
+    }
+  }, elementsList)
+
+  newCard.renderItems()
   checkCardsQuantity()
+  closePopup(newCardPopup);
 }
 
 function handleCardClick(name, link) {
@@ -73,18 +89,6 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', handleEscKey)
-}
-
-function addNewCard(evt) {
-  evt.preventDefault();
-  const cardInfo = {
-    link: cardImage.value,
-    name: cardName.value
-  }
-  const card = createCard(cardInfo)
-  elementsList.prepend(card);
-  checkCardsQuantity()
-  closePopup(newCardPopup);
 }
 
 function handleProfileFormSubmit(evt) {
@@ -132,5 +136,5 @@ popups.forEach((popup) => {
   })
 })
 
-addInitialCards(initialCards);
 enableValidation(validationConfig);
+initialCardsRendered.renderItems()

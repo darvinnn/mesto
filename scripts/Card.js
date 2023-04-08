@@ -1,7 +1,7 @@
 class Card {
-  constructor(cardLink, cardName, cardTemplate, handleCardClick, checkCardsQuantity) {
-    this._cardName = cardName;
-    this._cardLink = cardLink;
+  constructor({ link, name }, cardTemplate, handleCardClick, checkCardsQuantity) {
+    this._cardName = name;
+    this._cardLink = link;
     this._cardTemplate = cardTemplate;
     this._handleCardClick = handleCardClick;
     this._checkCardsQuantity = checkCardsQuantity;
