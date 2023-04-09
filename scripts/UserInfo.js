@@ -12,7 +12,6 @@ class UserInfo {
   }
 
   setUserInfo(name, description) {
-    console.log(this)
     this._name.textContent = name;
     this._description.textContent = description;
   }
