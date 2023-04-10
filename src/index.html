@@ -5,14 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./pages/index.css">
   <title>Mesto</title>
 </head>
 
 <body>
   <div class="page">
     <header class="header">
-      <img class="header__logo" src="./images/header__logo.svg" alt="Логотип">
+      <img class="header__logo" src="<%=require('./images/header__logo.svg')%>" alt="Логотип">
     </header>
     <main class="main">
       <div class="edit-popup popup">
@@ -34,7 +33,7 @@
       <div class="image-popup popup">
         <div class="image-popup__container">
           <button class="popup__close-button" id="image-popup__close-button" type="button"></button>
-          <img class="image-popup__image" src="./images/card__Sheregesh.jpg">
+          <img class="image-popup__image" src="<%=require('./images/card__Sheregesh.jpg')%>">
           <p class="image-popup__title">Testin</p>
         </div>
         <div class="popup__overlay popup__overlay_darker"></div>
@@ -56,7 +55,7 @@
         <div class="popup__overlay"></div>
       </div>
       <section class="profile">
-        <img class="profile__avatar" src="./images/profile__avatar.jpg" alt="Аватар">
+        <img class="profile__avatar" src="<%=require('./images/profile__avatar.jpg')%>" alt="Аватар">
         <div class="profile__info">
           <div class="profile__title">
             <h1 class="profile__name text-overflow">Жак-Ив Кусто</h1>
@@ -86,9 +85,6 @@
       </div>
     </li>
   </template>
-
-
-  <script src="./scripts/script.js" type="module"></script>
 </body>
 
 </html>

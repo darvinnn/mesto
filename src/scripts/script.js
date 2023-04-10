@@ -4,6 +4,7 @@ import FormValidator from "./FormValidator.js";
 import Section from "./Section.js";
 import { PopupWithImage, PopupWithForm } from "./Popup.js";
 import UserInfo from "./UserInfo.js";
+import '../pages/index.css'
 
 const validationConfig = {
   formSelector: '.form',
@@ -20,9 +21,6 @@ const profileName = document.querySelector('.profile__name');
 const profession = document.querySelector('.profile__subtitle');
 const elementsList = document.querySelector('.elements__list');
 const addNewCardButton = document.querySelector('.profile__add-button');
-const newCardForm = document.forms['new-card'];
-const cardName = newCardForm.querySelector('.new-card-popup__input_type_name');
-const cardImage = newCardForm.querySelector('.new-card-popup__input_type_image');
 const cardTemplate = document.querySelector('#card-template').content;
 
 
