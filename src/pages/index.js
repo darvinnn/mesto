@@ -1,27 +1,12 @@
-import initialCards from "./initialCards.js";
-import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
-import Section from "./Section.js";
-import { PopupWithImage, PopupWithForm } from "./Popup.js";
-import UserInfo from "./UserInfo.js";
+import initialCards from "../utils/initialCards.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
+import { validationConfig, editButton, nameInput, professionInput, profileName, profession, elementsList, addNewCardButton, cardTemplate } from "../utils/constants.js";
 import '../pages/index.css'
-
-const validationConfig = {
-  formSelector: '.form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit-button',
-  inactiveButtonClass: 'popup__submit-button_disabled',
-  inputError: 'input__error',
-  inputErrorText: 'input__error-text'
-}
-const editButton = document.querySelector('.profile__edit-button');
-const nameInput = document.querySelector('.edit-popup__input_type_name');
-const professionInput = document.querySelector('.edit-popup__input_type_profession');
-const profileName = document.querySelector('.profile__name');
-const profession = document.querySelector('.profile__subtitle');
-const elementsList = document.querySelector('.elements__list');
-const addNewCardButton = document.querySelector('.profile__add-button');
-const cardTemplate = document.querySelector('#card-template').content;
 
 
 const formValidators = {}
@@ -36,11 +21,11 @@ const enableValidation = (config) => {
 }
 
 
-const initialCardsRendered = new Section({
+const cardsSection = new Section({
   items: initialCards,
   renderer: (item) => {
-    const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity)
-    initialCardsRendered.addItem(card.render())
+    const card = createCard(item);
+    cardsSection.addItem(card);
   }
 }, elementsList)
 
@@ -57,22 +42,21 @@ const popupWithImage = new PopupWithImage('.image-popup')
 popupWithImage.setEventListeners()
 
 
+function createCard(item) {
+  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity)
+  const cardElement = card.render()
+  return cardElement
+}
+
 function addNewCard(evt, inputsObject) {
   evt.preventDefault();
-  const cardInfo = [{
+  const cardInfo = {
     link: inputsObject['new-card-image'],
     name: inputsObject['new-card-name']
-  }]
+  }
 
-  const newCard = new Section({
-    items: cardInfo,
-    renderer: (item) => {
-      const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity)
-      newCard.addItem(card.render())
-    }
-  }, elementsList)
-
-  newCard.renderItems();
+  const cardElement = createCard(cardInfo)
+  cardsSection.addItem(cardElement);
   checkCardsQuantity();
   newCardPopup.close();
 }
@@ -97,12 +81,12 @@ function checkCardsQuantity() {
     : elementsList.classList.remove('elements__list_few-cards');
 }
 
+
 editButton.addEventListener('click', () => {
-  formValidators['profileEdit'].resetValidation()
-  const info = userInfo.getUserInfo()
-  nameInput.value = info.name
-  professionInput.value = info.description
-  editPopup.open()
+  formValidators['profileEdit'].resetValidation();
+  const info = userInfo.getUserInfo();
+  editPopup.setInputValues(info);
+  editPopup.open();
 });
 
 addNewCardButton.addEventListener('click', () => {
@@ -110,5 +94,6 @@ addNewCardButton.addEventListener('click', () => {
   newCardPopup.open();
 });
 
+
 enableValidation(validationConfig);
-initialCardsRendered.renderItems()
+cardsSection.renderItems()

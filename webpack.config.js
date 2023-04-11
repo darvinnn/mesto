@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: './src/scripts/script.js',
+  entry: './src/pages/index.js',
   output: {
     // mode: 'production',
     filename: '[name].[contenthash].bundle.js',
@@ -16,6 +16,7 @@ module.exports = {
     },
     compress: true,
     port: 9000,
+    open: true,
   },
   plugins: [
     new HtmlWebpackPlugin({

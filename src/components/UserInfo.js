@@ -6,8 +6,8 @@ class UserInfo {
 
   getUserInfo() {
     return {
-      name: this._name.textContent,
-      description: this._description.textContent
+      'edit-name': this._name.textContent,
+      'edit-profession': this._description.textContent
     }
   }
 
