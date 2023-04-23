@@ -4,9 +4,11 @@ import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithDeleting from "../components/PopupWithDeliting.js";
 import UserInfo from "../components/UserInfo.js";
-import { validationConfig, editButton, nameInput, professionInput, profileName, profession, elementsList, addNewCardButton, cardTemplate } from "../utils/constants.js";
+import { validationConfig, avatarEditButton, avatar, editButton, profileName, profession, elementsList, addNewCardButton, cardTemplate } from "../utils/constants.js";
 import '../pages/index.css'
+import Popup from "../components/Popup.js";
 
 
 const formValidators = {}
@@ -29,8 +31,7 @@ const cardsSection = new Section({
   }
 }, elementsList)
 
-
-const userInfo = new UserInfo({ name: profileName, description: profession })
+const userInfo = new UserInfo({ name: profileName, description: profession, avatar: avatar })
 
 const editPopup = new PopupWithForm('.edit-popup', handleProfileFormSubmit)
 editPopup.setEventListeners()
@@ -41,9 +42,21 @@ newCardPopup.setEventListeners()
 const popupWithImage = new PopupWithImage('.image-popup')
 popupWithImage.setEventListeners()
 
+const deletePopup = new PopupWithDeleting('#delete-popup', checkCardsQuantity)
+deletePopup.setEventListeners()
+
+const avatarPopup = new PopupWithForm('#avatar-popup', changeAvatar)
+avatarPopup.setEventListeners()
+
+
+function changeAvatar(evt, { avatarInput }) {
+  evt.preventDefault()
+  userInfo.setAvatar(avatarInput)
+  avatarPopup.close()
+}
 
 function createCard(item) {
-  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity)
+  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity, deletePopup)
   const cardElement = card.render()
   return cardElement
 }
@@ -93,6 +106,11 @@ addNewCardButton.addEventListener('click', () => {
   formValidators['new-card'].resetValidation()
   newCardPopup.open();
 });
+
+avatarEditButton.addEventListener('click', () => {
+  formValidators['avatar'].resetValidation()
+  avatarPopup.open()
+})
 
 
 enableValidation(validationConfig);
