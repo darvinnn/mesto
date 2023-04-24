@@ -21,7 +21,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, this._fetchObject).then(res => res.json())
   }
 
-  addCard(name, link) {
+  addCard({ name, link }) {
     this._fetchObject.method = 'POST';
     this._fetchObject.body = JSON.stringify({ name, link })
 
@@ -46,9 +46,9 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${cardID}/likes`, this._fetchObject).then(res => res.json())
   }
 
-  changeAvatar(avatar) {
+  changeAvatar(avatarLink) {
     this._fetchObject.method = 'PATCH';
-    this._fetchObject.body = JSON.stringify({ avatar })
+    this._fetchObject.body = JSON.stringify({ avatar: avatarLink })
 
     return fetch(`${this._baseUrl}/users/me/avatar`, this._fetchObject).then(res => res.json())
   }

@@ -1,4 +1,3 @@
-import initialCards from "../utils/initialCards.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
@@ -6,12 +5,10 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithDeleting from "../components/PopupWithDeliting.js";
 import UserInfo from "../components/UserInfo.js";
-import { validationConfig, avatarEditButton, avatar, editButton, profileName, profession, elementsList, addNewCardButton, cardTemplate } from "../utils/constants.js";
+import { validationConfig, editSubmitButton, newCardSubmitButton, avatarSubmitButton, avatarEditButton, avatar, editButton, profileName, profession, elementsList, addNewCardButton, cardTemplate } from "../utils/constants.js";
 import api from "../components/Api.js";
 
 import '../pages/index.css'
-
-
 
 
 const formValidators = {}
@@ -27,7 +24,6 @@ const enableValidation = (config) => {
 
 
 const cardsSection = new Section({
-  items: initialCards,
   renderer: (item) => {
     const card = createCard(item);
     cardsSection.addItem(card);
@@ -52,38 +48,49 @@ const avatarPopup = new PopupWithForm('#avatar-popup', changeAvatar)
 avatarPopup.setEventListeners()
 
 
-function changeAvatar(evt, { avatarInput }) {
+async function changeAvatar(evt, { avatarInput }) {
   evt.preventDefault()
-  userInfo.setAvatar(avatarInput)
+
+  avatarSubmitButton.value = 'Сохранение...'
+  await api.changeAvatar(avatarInput)
+  userInfo.setAvatar({ avatar: avatarInput })
   avatarPopup.close()
+  avatarSubmitButton.value = 'Сохранить'
 }
 
 function createCard(item) {
-  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity, deletePopup)
+  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity, deletePopup, api)
   const cardElement = card.render()
   return cardElement
 }
 
-function addNewCard(evt, inputsObject) {
+async function addNewCard(evt, inputsObject) {
   evt.preventDefault();
   const cardInfo = {
     link: inputsObject['new-card-image'],
     name: inputsObject['new-card-name']
   }
 
-  const cardElement = createCard(cardInfo)
+  newCardSubmitButton.value = 'Создание...'
+  const card = await api.addCard(cardInfo)
+  const cardElement = createCard(card)
   cardsSection.addItem(cardElement);
   checkCardsQuantity();
   newCardPopup.close();
+  newCardSubmitButton.value = 'Создать'
 }
 
-function handleProfileFormSubmit(evt, inputsObject) {
+async function handleProfileFormSubmit(evt, inputsObject) {
   evt.preventDefault();
   const name = inputsObject['edit-name'];
-  const description = inputsObject['edit-profession'];
+  const about = inputsObject['edit-profession'];
+
+  editSubmitButton.value = 'Сохранение...'
+  await api.editUserInfo(name, about)
   const setUserInfo = userInfo.setUserInfo.bind(userInfo)
-  setUserInfo(name, description)
+  setUserInfo({ name, about })
   editPopup.close();
+  editSubmitButton.value = 'Сохранить'
 }
 
 function handleCardClick(name, link) {
@@ -95,6 +102,19 @@ function checkCardsQuantity() {
   document.querySelectorAll('.card').length < 3
     ? elementsList.classList.add('elements__list_few-cards')
     : elementsList.classList.remove('elements__list_few-cards');
+}
+
+const setProfile = async () => {
+  const profileParameters = await api.getUserInfo()
+  userInfo.setAvatar(profileParameters)
+  userInfo.setUserInfo(profileParameters)
+  api.id = profileParameters._id
+}
+
+const addinitialCards = async () => {
+  const cards = await api.getInitialCards()
+  cardsSection.renderItems(cards)
+  checkCardsQuantity()
 }
 
 
@@ -117,4 +137,5 @@ avatarEditButton.addEventListener('click', () => {
 
 
 enableValidation(validationConfig);
-cardsSection.renderItems()
+setProfile()
+addinitialCards()

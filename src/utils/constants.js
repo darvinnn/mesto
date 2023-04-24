@@ -14,3 +14,6 @@ export const addNewCardButton = document.querySelector('.profile__add-button');
 export const cardTemplate = document.querySelector('#card-template').content;
 export const avatarEditButton = document.querySelector('.profile__avatar-hover')
 export const avatar = document.querySelector('.profile__avatar')
+export const editSubmitButton = document.querySelector('#edit-submit')
+export const newCardSubmitButton = document.querySelector('#new-card-submit')
+export const avatarSubmitButton = document.querySelector('#avatar-submit')

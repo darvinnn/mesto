@@ -9,8 +9,6 @@
   transition: .2s;
   box-sizing: border-box;
   background-color: transparent;
-  grid-row: 1/ span 2;
-  grid-column: 3/ span 4;
 }
 
 .profile__add-button:hover {
