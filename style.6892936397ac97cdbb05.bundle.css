@@ -34,7 +34,7 @@
 .profile__name{font-size:42px;font-weight:500;line-height:48px;margin:0;max-width:450px}@media (max-width:910px){.profile__name{font-size:27px;line-height:33px}}@media (max-width:720px){.profile__name{max-width:60vw}}
 .profile__info{color:#fff;display:flex;flex-direction:column;gap:7px;padding-left:30px;padding-right:18px;padding-top:23px}@media (max-width:720px){.profile__info{align-items:center;gap:6px;padding:0}}
 .profile__edit-button{background-color:transparent;background-image:url(img/profile__edit-button.8667ac4a523e8fc42e59.svg);background-position:50%;background-repeat:no-repeat;border:1px solid #fff;height:24px;margin-bottom:10px;transition:.2s;width:24px}.profile__edit-button:hover{cursor:pointer;opacity:.6}@media (max-width:910px){.profile__edit-button{background-size:7.5px;height:18px;margin-bottom:5px;width:18px}}
-.profile__avatar{align-self:center;border-radius:50%;grid-column:1/2;grid-row:1/2;height:120px;width:120px}
+.profile__avatar{align-self:center;border-radius:50%;grid-column:1/2;grid-row:1/2;height:120px;-o-object-fit:cover;object-fit:cover;width:120px}
 .profile__add-button{align-self:center;background-color:transparent;background-image:url(img/profile__add-button.d86bb2edc2f6eadb96b7.svg);background-position:50%;background-repeat:no-repeat;border:2px solid #fff;border-radius:2px;box-sizing:border-box;height:50px;transition:.2s}.profile__add-button:hover{cursor:pointer;opacity:.6}@media (max-width:720px){.profile__add-button{max-width:306px;width:100%}}@media (max-width:420px){.profile__add-button{background-size:16px}}
 
 .elements__list{-moz-column-gap:17px;column-gap:17px;display:grid;grid-template-columns:repeat(auto-fit,minmax(282px,1fr));justify-content:center;list-style-type:none;margin:0 auto;max-width:880px;padding-left:0;padding-top:51px;row-gap:20px;width:68.75vw}@media (max-width:420px){.elements__list{-moz-column-gap:0;column-gap:0;grid-template-columns:88.125vw;padding-top:36px;width:88.125vw}}
@@ -54,4 +54,4 @@
 .input__error-text{color:red;font-size:12px;font-weight:400;line-height:15px}
 
 
-/*# sourceMappingURL=style.c9e462807d872b4070be.bundle.css.map*/
+/*# sourceMappingURL=style.6892936397ac97cdbb05.bundle.css.map*/
