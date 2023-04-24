@@ -7,8 +7,11 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithDeleting from "../components/PopupWithDeliting.js";
 import UserInfo from "../components/UserInfo.js";
 import { validationConfig, avatarEditButton, avatar, editButton, profileName, profession, elementsList, addNewCardButton, cardTemplate } from "../utils/constants.js";
+import api from "../components/Api.js";
+
 import '../pages/index.css'
-import Popup from "../components/Popup.js";
+
+
 
 
 const formValidators = {}
