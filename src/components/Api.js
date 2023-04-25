@@ -7,50 +7,59 @@ class Api {
   }
 
   getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, this._fetchObject).then(res => res.json())
+    return this._checkResponse(fetch(`${this._baseUrl}/users/me`, this._fetchObject))
   }
 
   getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, this._fetchObject).then(res => res.json())
+    return this._checkResponse(fetch(`${this._baseUrl}/cards`, this._fetchObject))
   }
 
   editUserInfo(name, about) {
     this._fetchObject.method = 'PATCH';
     this._fetchObject.body = JSON.stringify({ name, about })
 
-    return fetch(`${this._baseUrl}/users/me`, this._fetchObject).then(res => res.json())
+    return this._checkResponse(fetch(`${this._baseUrl}/users/me`, this._fetchObject))
   }
 
   addCard({ name, link }) {
     this._fetchObject.method = 'POST';
     this._fetchObject.body = JSON.stringify({ name, link })
 
-    return fetch(`${this._baseUrl}/cards`, this._fetchObject).then(res => res.json())
+    return this._checkResponse(fetch(`${this._baseUrl}/cards`, this._fetchObject))
   }
 
   deleteCard(cardID) {
     this._fetchObject.method = 'DELETE';
 
-    return fetch(`${this._baseUrl}/cards/${cardID}`, this._fetchObject).then(res => res.json())
+    return this._checkResponse(fetch(`${this._baseUrl}/cards/${cardID}`, this._fetchObject))
   }
 
   pressLike(cardID) {
     this._fetchObject.method = 'PUT';
 
-    return fetch(`${this._baseUrl}/cards/${cardID}/likes`, this._fetchObject).then(res => res.json())
+    return this._checkResponse(fetch(`${this._baseUrl}/cards/${cardID}/likes`, this._fetchObject))
   }
 
   deleteLike(cardID) {
     this._fetchObject.method = 'DELETE';
 
-    return fetch(`${this._baseUrl}/cards/${cardID}/likes`, this._fetchObject).then(res => res.json())
+    return this._checkResponse(fetch(`${this._baseUrl}/cards/${cardID}/likes`, this._fetchObject))
   }
 
   changeAvatar(avatarLink) {
     this._fetchObject.method = 'PATCH';
     this._fetchObject.body = JSON.stringify({ avatar: avatarLink })
 
-    return fetch(`${this._baseUrl}/users/me/avatar`, this._fetchObject).then(res => res.json())
+    return this._checkResponse(fetch(`${this._baseUrl}/users/me/avatar`, this._fetchObject))
+  }
+
+  _checkResponse(Promise) {
+    return Promise.then(res => {
+      if (res.ok) {
+        return res.json()
+      }
+      console.log(`Ошибка: ${res.status}`);
+    })
   }
 }
 

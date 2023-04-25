@@ -5,7 +5,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithDeleting from "../components/PopupWithDeliting.js";
 import UserInfo from "../components/UserInfo.js";
-import { validationConfig, editSubmitButton, newCardSubmitButton, avatarSubmitButton, avatarEditButton, avatar, editButton, profileName, profession, elementsList, addNewCardButton, cardTemplate } from "../utils/constants.js";
+import { validationConfig, avatarEditButton, avatar, editButton, profileName, profession, elementsList, addNewCardButton, cardTemplate } from "../utils/constants.js";
 import api from "../components/Api.js";
 
 import '../pages/index.css'
@@ -50,18 +50,26 @@ avatarPopup.setEventListeners()
 
 async function changeAvatar(evt, { avatarInput }) {
   evt.preventDefault()
-
-  avatarSubmitButton.value = 'Сохранение...'
-  await api.changeAvatar(avatarInput)
-  userInfo.setAvatar({ avatar: avatarInput })
-  avatarPopup.close()
-  avatarSubmitButton.value = 'Сохранить'
+  try {
+    avatarPopup.setButtonName('Сохранение...')
+    await api.changeAvatar(avatarInput)
+    userInfo.setAvatar({ avatar: avatarInput })
+    avatarPopup.close()
+    avatarPopup.setButtonName('Сохранить')
+  } catch (error) {
+    avatarPopup.setButtonName(`Ошибка: ${error.message}`)
+    setTimeout(() => avatarPopup.setButtonName('Сохранить'), 2000)
+  }
 }
 
 function createCard(item) {
-  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity, deletePopup, api)
+  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity, api, openDeletePopup)
   const cardElement = card.render()
   return cardElement
+}
+
+function openDeletePopup(cardRemover) {
+  deletePopup.open(cardRemover)
 }
 
 async function addNewCard(evt, inputsObject) {
@@ -71,13 +79,18 @@ async function addNewCard(evt, inputsObject) {
     name: inputsObject['new-card-name']
   }
 
-  newCardSubmitButton.value = 'Создание...'
-  const card = await api.addCard(cardInfo)
-  const cardElement = createCard(card)
-  cardsSection.addItem(cardElement);
-  checkCardsQuantity();
-  newCardPopup.close();
-  newCardSubmitButton.value = 'Создать'
+  try {
+    newCardPopup.setButtonName('Создание...')
+    const card = await api.addCard(cardInfo)
+    const cardElement = createCard(card)
+    cardsSection.addItem(cardElement);
+    checkCardsQuantity();
+    newCardPopup.close();
+    newCardPopup.setButtonName('Создать')
+  } catch (error) {
+    newCardPopup.setButtonName(`Ошибка: ${error.message}`)
+    setTimeout(() => newCardPopup.setButtonName('Сохранить'), 2000)
+  }
 }
 
 async function handleProfileFormSubmit(evt, inputsObject) {
@@ -85,12 +98,17 @@ async function handleProfileFormSubmit(evt, inputsObject) {
   const name = inputsObject['edit-name'];
   const about = inputsObject['edit-profession'];
 
-  editSubmitButton.value = 'Сохранение...'
-  await api.editUserInfo(name, about)
-  const setUserInfo = userInfo.setUserInfo.bind(userInfo)
-  setUserInfo({ name, about })
-  editPopup.close();
-  editSubmitButton.value = 'Сохранить'
+  try {
+    editPopup.setButtonName('Сохранение...')
+    await api.editUserInfo(name, about)
+    const setUserInfo = userInfo.setUserInfo.bind(userInfo)
+    setUserInfo({ name, about })
+    editPopup.close();
+    editPopup.setButtonName('Сохранить')
+  } catch (error) {
+    editPopup.setButtonName(`Ошибка: ${error.message}`)
+    setTimeout(() => editPopup.setButtonName('Сохранить'), 2000)
+  }
 }
 
 function handleCardClick(name, link) {
@@ -105,16 +123,22 @@ function checkCardsQuantity() {
 }
 
 const setProfile = async () => {
-  const profileParameters = await api.getUserInfo()
-  userInfo.setAvatar(profileParameters)
-  userInfo.setUserInfo(profileParameters)
-  api.id = profileParameters._id
+  try {
+    const profileParameters = await api.getUserInfo()
+    userInfo.setAvatar(profileParameters)
+    userInfo.setUserInfo(profileParameters)
+    api.id = profileParameters._id
+  } catch (error) {
+    userInfo.setUserInfo({ name: 'Ошибка загрузки', about: error.message })
+  }
 }
 
-const addinitialCards = async () => {
-  const cards = await api.getInitialCards()
-  cardsSection.renderItems(cards)
-  checkCardsQuantity()
+const addInitialCards = async () => {
+  try {
+    const cards = await api.getInitialCards()
+    cardsSection.renderItems(cards)
+    checkCardsQuantity()
+  } catch (error) { console.log(error) }
 }
 
 
@@ -136,6 +160,11 @@ avatarEditButton.addEventListener('click', () => {
 })
 
 
+async function renderPage() {
+  try {
+    await Promise.all([setProfile(), addInitialCards()])
+  } catch (error) { console.log(error) }
+}
+
 enableValidation(validationConfig);
-setProfile()
-addinitialCards()
+renderPage()
