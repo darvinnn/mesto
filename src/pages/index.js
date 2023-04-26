@@ -11,6 +11,9 @@ import api from "../components/Api.js";
 import '../pages/index.css'
 
 
+let userId
+
+
 const formValidators = {}
 const enableValidation = (config) => {
   const formList = Array.from(document.querySelectorAll(config.formSelector))
@@ -30,47 +33,32 @@ const cardsSection = new Section({
   }
 }, elementsList)
 
+
 const userInfo = new UserInfo({ name: profileName, description: profession, avatar: avatar })
+
 
 const editPopup = new PopupWithForm('.edit-popup', handleProfileFormSubmit)
 editPopup.setEventListeners()
 
+async function handleProfileFormSubmit(evt, inputsObject) {
+  evt.preventDefault();
+  const name = inputsObject['edit-name'];
+  const about = inputsObject['edit-profession'];
+
+  try {
+    editPopup.setButtonName('Сохранение...')
+    await api.editUserInfo(name, about)
+    const setUserInfo = userInfo.setUserInfo.bind(userInfo)
+    setUserInfo({ name, about })
+    editPopup.close();
+  }
+  catch (error) { console.log(`Ошибка: ${error.message}`) }
+  finally { editPopup.setButtonName('Сохранить') }
+}
+
+
 const newCardPopup = new PopupWithForm('.new-card-popup', addNewCard)
 newCardPopup.setEventListeners()
-
-const popupWithImage = new PopupWithImage('.image-popup')
-popupWithImage.setEventListeners()
-
-const deletePopup = new PopupWithDeleting('#delete-popup', checkCardsQuantity)
-deletePopup.setEventListeners()
-
-const avatarPopup = new PopupWithForm('#avatar-popup', changeAvatar)
-avatarPopup.setEventListeners()
-
-
-async function changeAvatar(evt, { avatarInput }) {
-  evt.preventDefault()
-  try {
-    avatarPopup.setButtonName('Сохранение...')
-    await api.changeAvatar(avatarInput)
-    userInfo.setAvatar({ avatar: avatarInput })
-    avatarPopup.close()
-    avatarPopup.setButtonName('Сохранить')
-  } catch (error) {
-    avatarPopup.setButtonName(`Ошибка: ${error.message}`)
-    setTimeout(() => avatarPopup.setButtonName('Сохранить'), 2000)
-  }
-}
-
-function createCard(item) {
-  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity, api, openDeletePopup)
-  const cardElement = card.render()
-  return cardElement
-}
-
-function openDeletePopup(cardRemover) {
-  deletePopup.open(cardRemover)
-}
 
 async function addNewCard(evt, inputsObject) {
   evt.preventDefault();
@@ -86,29 +74,65 @@ async function addNewCard(evt, inputsObject) {
     cardsSection.addItem(cardElement);
     checkCardsQuantity();
     newCardPopup.close();
-    newCardPopup.setButtonName('Создать')
-  } catch (error) {
-    newCardPopup.setButtonName(`Ошибка: ${error.message}`)
-    setTimeout(() => newCardPopup.setButtonName('Сохранить'), 2000)
   }
+  catch (error) { console.log(`Ошибка: ${error.message}`) }
+  finally { newCardPopup.setButtonName('Создать') }
 }
 
-async function handleProfileFormSubmit(evt, inputsObject) {
-  evt.preventDefault();
-  const name = inputsObject['edit-name'];
-  const about = inputsObject['edit-profession'];
 
+const popupWithImage = new PopupWithImage('.image-popup')
+popupWithImage.setEventListeners()
+
+
+const deletePopup = new PopupWithDeleting('#delete-popup')
+deletePopup.setEventListeners()
+
+
+const avatarPopup = new PopupWithForm('#avatar-popup', changeAvatar)
+avatarPopup.setEventListeners()
+
+async function changeAvatar(evt, { avatarInput }) {
+  evt.preventDefault()
   try {
-    editPopup.setButtonName('Сохранение...')
-    await api.editUserInfo(name, about)
-    const setUserInfo = userInfo.setUserInfo.bind(userInfo)
-    setUserInfo({ name, about })
-    editPopup.close();
-    editPopup.setButtonName('Сохранить')
-  } catch (error) {
-    editPopup.setButtonName(`Ошибка: ${error.message}`)
-    setTimeout(() => editPopup.setButtonName('Сохранить'), 2000)
+    avatarPopup.setButtonName('Сохранение...')
+    await api.changeAvatar(avatarInput)
+    userInfo.setAvatar({ avatar: avatarInput })
+    avatarPopup.close()
   }
+  catch (error) { avatarPopup.setButtonName(`Ошибка: ${error.message}`) }
+  finally { avatarPopup.setButtonName('Сохранить') }
+}
+
+
+function createCard(item) {
+  const card = new Card(item, cardTemplate, handleCardClick, checkCardsQuantity, userId, openDeletePopup, likeHandler)
+  const cardElement = card.render()
+  return cardElement
+}
+
+async function likeHandler(evt, card, cardId) {
+  try {
+    if (!evt.target.classList.contains('card__like-button_active')) {
+      const newCardInfo = await api.pressLike(cardId)
+      card.renderLikes(newCardInfo.likes)
+    }
+    else {
+      const newCardInfo = await api.deleteLike(cardId)
+      card.renderLikes(newCardInfo.likes)
+    }
+  }
+  catch (err) { console.log(err) }
+}
+
+function openDeletePopup(cardRemover, cardId) {
+  const removeCard = async () => {
+    try {
+      await api.deleteCard(cardId)
+      cardRemover()
+    }
+    catch (err) { console.log(err) }
+  }
+  deletePopup.open(removeCard)
 }
 
 function handleCardClick(name, link) {
@@ -122,14 +146,23 @@ function checkCardsQuantity() {
     : elementsList.classList.remove('elements__list_few-cards');
 }
 
+
+function renderPage() {
+  Promise.all([setProfile(), addInitialCards()])
+    .catch(err => console.log(err))
+}
+
 const setProfile = async () => {
   try {
     const profileParameters = await api.getUserInfo()
     userInfo.setAvatar(profileParameters)
     userInfo.setUserInfo(profileParameters)
-    api.id = profileParameters._id
-  } catch (error) {
+    userId = profileParameters._id
+  }
+  catch (error) {
     userInfo.setUserInfo({ name: 'Ошибка загрузки', about: error.message })
+    console.log(error)
+    throw new Error(error)
   }
 }
 
@@ -138,7 +171,11 @@ const addInitialCards = async () => {
     const cards = await api.getInitialCards()
     cardsSection.renderItems(cards)
     checkCardsQuantity()
-  } catch (error) { console.log(error) }
+  }
+  catch (error) {
+    console.log(error)
+    throw new Error(error)
+  }
 }
 
 
@@ -147,6 +184,7 @@ editButton.addEventListener('click', () => {
   const info = userInfo.getUserInfo();
   editPopup.setInputValues(info);
   editPopup.open();
+  renderPage()
 });
 
 addNewCardButton.addEventListener('click', () => {
@@ -159,12 +197,6 @@ avatarEditButton.addEventListener('click', () => {
   avatarPopup.open()
 })
 
-
-async function renderPage() {
-  try {
-    await Promise.all([setProfile(), addInitialCards()])
-  } catch (error) { console.log(error) }
-}
 
 enableValidation(validationConfig);
 renderPage()

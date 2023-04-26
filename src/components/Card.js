@@ -1,5 +1,5 @@
 class Card {
-  constructor({ link, name, _id, likes, owner }, cardTemplate, handleCardClick, checkCardsQuantity, api, openDeletePopup) {
+  constructor({ link, name, _id, likes, owner }, cardTemplate, handleCardClick, checkCardsQuantity, userId, openDeletePopup, likeHandler) {
     this._cardName = name;
     this._cardLink = link;
     this._cardTemplate = cardTemplate;
@@ -7,7 +7,8 @@ class Card {
     this._checkCardsQuantity = checkCardsQuantity;
     this._cardId = _id;
     this._likes = likes;
-    this._api = api;
+    this._likeHandler = likeHandler;
+    this._userId = userId;
     this._owner = owner;
     this._openDeletePopup = openDeletePopup
   }
@@ -17,15 +18,13 @@ class Card {
     return this._card;
   }
 
-  async _handleDelete() {
-    try {
-      await this._api.deleteCard(this._cardId)
-      this._card.remove()
-      this._checkCardsQuantity()
-    } catch (error) {
-      console.log(error)
-      throw new Error(error.message)
-    }
+  renderLikes(likes) {
+    this._likeCounter.textContent = likes.length
+
+    const isLiked = likes.some(user => user._id === this._userId)
+    isLiked
+      ? this._cardLikeButton.classList.add('card__like-button_active')
+      : this._cardLikeButton.classList.remove('card__like-button_active')
   }
 
   _setEventListeners = () => {
@@ -33,23 +32,18 @@ class Card {
 
     this._cardLikeButton.addEventListener('click', this._handleLikeButton)
 
-    const handleDelete = this._handleDelete.bind(this)
-    const openDeletePopup = this._openDeletePopup.bind(this)
-    this._cardDeleteButton.addEventListener('click', () => openDeletePopup(handleDelete))
+    const cardRemover = this._cardRemover.bind(this)
+    this._cardDeleteButton.addEventListener('click', () => this._openDeletePopup(cardRemover, this._cardId))
   }
 
-  _handleLikeButton = async (evt) => {
-    try {
-      if (!evt.target.classList.contains('card__like-button_active')) {
-        const newCardInfo = await this._api.pressLike(this._cardId)
-        this._likes = newCardInfo.likes
-      } else {
-        const newCardInfo = await this._api.deleteLike(this._cardId)
-        this._likes = newCardInfo.likes
-      }
-      evt.target.classList.toggle('card__like-button_active');
-      this._renderLikes()
-    } catch (error) { console.log(error) }
+  _cardRemover() {
+    this._card.remove()
+    console.log(this._card)
+    this._checkCardsQuantity()
+  }
+
+  _handleLikeButton = (evt) => {
+    this._likeHandler(evt, this, this._cardId)
   }
 
   _getCard = () => { return this._cardTemplate.querySelector('.card').cloneNode(true) }
@@ -67,22 +61,13 @@ class Card {
     this._cardImage.alt = this._cardName;
 
     this._likeCounter = this._card.querySelector('.card__like-counter')
-    this._renderLikes()
+    this.renderLikes(this._likes)
 
     this._setEventListeners()
   }
 
-  _renderLikes() {
-    this._likeCounter.textContent = this._likes.length
-
-    const isLiked = this._likes.some(user => user._id === this._api.id)
-    if (isLiked) {
-      this._cardLikeButton.classList.add('card__like-button_active')
-    }
-  }
-
   _renderDeleteIcon() {
-    if (this._owner._id !== this._api.id) { this._cardDeleteButton.classList.add('card__delete-button_disabled') }
+    if (this._owner._id !== this._userId.id) { this._cardDeleteButton.classList.add('card__delete-button_disabled') }
   }
 }
 

@@ -53,8 +53,8 @@ class Api {
     return this._checkResponse(fetch(`${this._baseUrl}/users/me/avatar`, this._fetchObject))
   }
 
-  _checkResponse(Promise) {
-    return Promise.then(res => {
+  _checkResponse(promise) {
+    return promise.then(res => {
       if (res.ok) {
         return res.json()
       }
