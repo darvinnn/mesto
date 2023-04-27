@@ -127,10 +127,13 @@ async function likeHandler(evt, card, cardId) {
 function openDeletePopup(cardRemover, cardId) {
   const removeCard = async () => {
     try {
+      deletePopup.setButtonName('Удаление...')
       await api.deleteCard(cardId)
       cardRemover()
+      deletePopup.close()
     }
     catch (err) { console.log(err) }
+    finally { deletePopup.setButtonName('Да') }
   }
   deletePopup.open(removeCard)
 }
@@ -139,43 +142,33 @@ function handleCardClick(name, link) {
   popupWithImage.open(name, link)
 }
 
+
 //Добавил функцию, чтобы карточки были резиновыми при адаптиве, но не растягивались на весь экран пк, если карточек меньше трех
 function checkCardsQuantity() {
-  document.querySelectorAll('.card').length < 3
+  elementsList.children.length < 3
     ? elementsList.classList.add('elements__list_few-cards')
     : elementsList.classList.remove('elements__list_few-cards');
 }
 
 
 function renderPage() {
-  Promise.all([setProfile(), addInitialCards()])
-    .catch(err => console.log(err))
+  Promise.all([api.getUserInfo(), api.getInitialCards()])
+    .then(([userData, initialCards]) => {
+      setProfile(userData);
+      addInitialCards(initialCards);
+    })
+    .catch((error) => console.log(error))
 }
 
-const setProfile = async () => {
-  try {
-    const profileParameters = await api.getUserInfo()
-    userInfo.setAvatar(profileParameters)
-    userInfo.setUserInfo(profileParameters)
-    userId = profileParameters._id
-  }
-  catch (error) {
-    userInfo.setUserInfo({ name: 'Ошибка загрузки', about: error.message })
-    console.log(error)
-    throw new Error(error)
-  }
+const setProfile = (userData) => {
+  userInfo.setAvatar(userData)
+  userInfo.setUserInfo(userData)
+  userId = userData._id
 }
 
-const addInitialCards = async () => {
-  try {
-    const cards = await api.getInitialCards()
-    cardsSection.renderItems(cards)
-    checkCardsQuantity()
-  }
-  catch (error) {
-    console.log(error)
-    throw new Error(error)
-  }
+const addInitialCards = (cards) => {
+  cardsSection.renderItems(cards)
+  checkCardsQuantity()
 }
 
 
@@ -184,7 +177,6 @@ editButton.addEventListener('click', () => {
   const info = userInfo.getUserInfo();
   editPopup.setInputValues(info);
   editPopup.open();
-  renderPage()
 });
 
 addNewCardButton.addEventListener('click', () => {

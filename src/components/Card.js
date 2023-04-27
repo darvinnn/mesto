@@ -22,9 +22,7 @@ class Card {
     this._likeCounter.textContent = likes.length
 
     const isLiked = likes.some(user => user._id === this._userId)
-    isLiked
-      ? this._cardLikeButton.classList.add('card__like-button_active')
-      : this._cardLikeButton.classList.remove('card__like-button_active')
+    this._cardLikeButton.classList.toggle('card__like-button_active', isLiked)
   }
 
   _setEventListeners = () => {
@@ -67,7 +65,7 @@ class Card {
   }
 
   _renderDeleteIcon() {
-    if (this._owner._id !== this._userId.id) { this._cardDeleteButton.classList.add('card__delete-button_disabled') }
+    if (this._owner._id !== this._userId) { this._cardDeleteButton.classList.add('card__delete-button_disabled') }
   }
 }
 
